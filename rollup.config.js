@@ -4,6 +4,8 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import ts from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
+import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-from-bundle";
+
 
 const configs = [
   { input: 'src/index.ts', file: 'dist/vuex-orm-axios.esm-browser.js', format: 'es', browser: true, env: 'development' },
@@ -45,6 +47,8 @@ function createEntry(config) {
       ? `(process.env.NODE_ENV !== 'production')`
       : config.env !== 'production'
   }))
+
+  c.plugins.push(excludeDependenciesFromBundle())
 
   c.plugins.push(resolve())
   c.plugins.push(commonjs())
