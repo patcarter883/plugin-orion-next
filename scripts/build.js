@@ -5,12 +5,12 @@ const { gzipSync } = require('zlib')
 const { compress } = require('brotli')
 
 const files = [
-  'dist/vuex-orm-axios.esm-browser.js',
-  'dist/vuex-orm-axios.esm-browser.prod.js',
-  'dist/vuex-orm-axios.esm-bundler.js',
-  'dist/vuex-orm-axios.global.js',
-  'dist/vuex-orm-axios.global.prod.js',
-  'dist/vuex-orm-axios.cjs.js'
+  'dist/vuex-orm-orion.esm-browser.js',
+  'dist/vuex-orm-orion.esm-browser.prod.js',
+  'dist/vuex-orm-orion.esm-bundler.js',
+  'dist/vuex-orm-orion.global.js',
+  'dist/vuex-orm-orion.global.prod.js',
+  'dist/vuex-orm-orion.cjs.js'
 ]
 
 async function run() {

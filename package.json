@@ -1,12 +1,12 @@
 {
-  "name": "@vuex-orm/plugin-axios",
+  "name": "@vuex-orm/plugin-orion",
   "version": "1.0.0-draft.2",
-  "description": "Vuex ORM plugin for adding smooth integration with axios.",
-  "main": "dist/vuex-orm-axios.cjs.js",
-  "browser": "dist/vuex-orm-axios.esm-browser.js",
-  "module": "dist/vuex-orm-axios.esm-bundler.js",
-  "unpkg": "dist/vuex-orm-axios.global.js",
-  "jsdelivr": "dist/vuex-orm-axios.global.js",
+  "description": "Vuex ORM plugin for adding smooth integration with Laravel Orion.",
+  "main": "dist/vuex-orm-orion.cjs.js",
+  "browser": "dist/vuex-orm-orion.esm-browser.js",
+  "module": "dist/vuex-orm-orion.esm-bundler.js",
+  "unpkg": "dist/vuex-orm-orion.global.js",
+  "jsdelivr": "dist/vuex-orm-orion.global.js",
   "typings": "dist/src/index.d.ts",
   "files": [
     "dist",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vuex-orm/plugin-axios.git"
+    "url": "git+https://github.com/patcarter883/plugin-orion-next/plugin-orion-next.git"
   },
   "keywords": [
     "vue",
@@ -39,12 +39,12 @@
     "vuex-plugin",
     "vuex-orm",
     "vuex-orm-plugin",
-    "axios"
+    "orion"
   ],
-  "author": "Kia Ishii",
+  "author": "Pat Carter",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vuex-orm/plugin-axios/issues"
+    "url": "https://github.com/patcarter883/plugin-orion-next/issues"
   },
   "peerDependencies": {
     "@vuex-orm/core": "1.0.0-draft.14",
