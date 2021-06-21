@@ -30,6 +30,6 @@ declare module '@vuex-orm/core/dist/src/repository/Repository' {
 
 declare module '@vuex-orm/core/dist/src/model/Model' {
   interface Model {
-    orionModel?: OrionModel
+    orionModel: OrionModel
   }
 }
