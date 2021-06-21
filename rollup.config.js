@@ -4,16 +4,48 @@ import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import ts from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
-import excludeDependenciesFromBundle from "rollup-plugin-exclude-dependencies-from-bundle";
-
+import excludeDependenciesFromBundle from 'rollup-plugin-exclude-dependencies-from-bundle'
 
 const configs = [
-  { input: 'src/index.ts', file: 'dist/vuex-orm-axios.esm-browser.js', format: 'es', browser: true, env: 'development' },
-  { input: 'src/index.ts', file: 'dist/vuex-orm-axios.esm-browser.prod.js', format: 'es', browser: true, env: 'production' },
-  { input: 'src/index.ts', file: 'dist/vuex-orm-axios.esm-bundler.js', format: 'es', env: 'development' },
-  { input: 'src/index.cjs.ts', file: 'dist/vuex-orm-axios.global.js', format: 'iife', env: 'development' },
-  { input: 'src/index.cjs.ts', file: 'dist/vuex-orm-axios.global.prod.js', format: 'iife', minify: true, env: 'production' },
-  { input: 'src/index.cjs.ts', file: 'dist/vuex-orm-axios.cjs.js', format: 'cjs', env: 'development' }
+  {
+    input: 'src/index.ts',
+    file: 'dist/vuex-orm-orion.esm-browser.js',
+    format: 'es',
+    browser: true,
+    env: 'development'
+  },
+  {
+    input: 'src/index.ts',
+    file: 'dist/vuex-orm-orion.esm-browser.prod.js',
+    format: 'es',
+    browser: true,
+    env: 'production'
+  },
+  {
+    input: 'src/index.ts',
+    file: 'dist/vuex-orm-orion.esm-bundler.js',
+    format: 'es',
+    env: 'development'
+  },
+  {
+    input: 'src/index.cjs.ts',
+    file: 'dist/vuex-orm-orion.global.js',
+    format: 'iife',
+    env: 'development'
+  },
+  {
+    input: 'src/index.cjs.ts',
+    file: 'dist/vuex-orm-orion.global.prod.js',
+    format: 'iife',
+    minify: true,
+    env: 'production'
+  },
+  {
+    input: 'src/index.cjs.ts',
+    file: 'dist/vuex-orm-orion.cjs.js',
+    format: 'cjs',
+    env: 'development'
+  }
 ]
 
 function createEntries() {
@@ -39,32 +71,46 @@ function createEntry(config) {
   }
 
   if (config.format === 'iife') {
-    c.output.name = 'VuexORMAxios'
+    c.output.name = 'VuexORMOrion'
   }
 
-  c.plugins.push(replace({
-    __DEV__: config.format === 'es' && !config.browser
-      ? `(process.env.NODE_ENV !== 'production')`
-      : config.env !== 'production'
-  }))
+  c.plugins.push(
+    replace({
+      __DEV__:
+        config.format === 'es' && !config.browser
+          ? `(process.env.NODE_ENV !== 'production')`
+          : config.env !== 'production'
+    })
+  )
 
   c.plugins.push(excludeDependenciesFromBundle())
 
   c.plugins.push(resolve())
   c.plugins.push(commonjs())
 
-  c.plugins.push(ts({
-    check: config.format === 'es' && config.browser && config.env === 'development',
-    tsconfig: path.resolve(__dirname, 'tsconfig.json'),
-    cacheRoot: path.resolve(__dirname, 'node_modules/.rts2_cache'),
-    tsconfigOverride: {
-      compilerOptions: {
-        declaration: config.format === 'es' && config.browser && config.env === 'development',
-        target: config.format === 'iife' || config.format === 'cjs' ? 'es5' : 'es2018'
-      },
-      exclude: ['test']
-    }
-  }))
+  c.plugins.push(
+    ts({
+      check:
+        config.format === 'es' &&
+        config.browser &&
+        config.env === 'development',
+      tsconfig: path.resolve(__dirname, 'tsconfig.json'),
+      cacheRoot: path.resolve(__dirname, 'node_modules/.rts2_cache'),
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration:
+            config.format === 'es' &&
+            config.browser &&
+            config.env === 'development',
+          target:
+            config.format === 'iife' || config.format === 'cjs'
+              ? 'es5'
+              : 'es2018'
+        },
+        exclude: ['test']
+      }
+    })
+  )
 
   if (config.minify) {
     c.plugins.push(terser({ module: config.format === 'es' }))
