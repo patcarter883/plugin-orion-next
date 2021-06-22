@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import { Model, Element, Item, Collection } from '@vuex-orm/core'
-import { Model as OrionModel } from '@tailflow/laravel-orion/lib/model'
 
 declare module '@vuex-orm/core/dist/src/repository/Repository' {
   export interface Repository<M extends Model = Model> {
-    orionModel: OrionModel
     $save(records: Element | Element[]): Promise<M | M[]>
     // $save(records: Element[]): Promise<M[]>
     // $save(record: Element): Promise<M>
@@ -25,7 +24,11 @@ declare module '@vuex-orm/core/dist/src/repository/Repository' {
 }
 
 declare module '@vuex-orm/core/dist/src/model/Model' {
+  namespace Model {
+    export let orionModel: unknown
+  }
+
   interface Model {
-    orionModel: OrionModel
+    orionModel: unknown
   }
 }

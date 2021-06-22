@@ -1,14 +1,15 @@
 import { Repository, Model, Element, Item, Collection } from '@vuex-orm/core'
 import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
+import { Model as OrionModel } from '@tailflow/laravel-orion/lib/model'
 
 export function mixin(repository: typeof Repository): void {
-  let repo = repository.prototype as Repository<Model>
+  const repo = repository.prototype as Repository<Model>
 
   repo.$save = async function(
     records: Element | Element[]
   ): Promise<Model | Model[]> {
     const model = this.getModel()
-    const orion = model.orionModel
+    const orion = model.$self().orionModel as OrionModel
     const orionPromises = []
     let orionResponse
     if (Array.isArray(records)) {
@@ -29,7 +30,7 @@ export function mixin(repository: typeof Repository): void {
     records: Element | Element[]
   ): Promise<Model | Model[]> {
     const model = this.getModel()
-    const orion = model.orionModel
+    const orion = model.$self().orionModel as OrionModel
     const orionPromises = []
     let orionResponse
     if (Array.isArray(records)) {
@@ -50,7 +51,7 @@ export function mixin(repository: typeof Repository): void {
     ids: (string | number) | (string | number)[]
   ): Promise<Item<Model> | Collection<Model>> {
     const model = this.getModel()
-    const orion = model.orionModel
+    const orion = model.$self().orionModel as OrionModel
     let orionResponse
     if (Array.isArray(ids)) {
       orionResponse = await orion
@@ -68,7 +69,7 @@ export function mixin(repository: typeof Repository): void {
 
   repo.$all = async function(): Promise<Collection<Model>> {
     const model = this.getModel()
-    const orion = model.orionModel
+    const orion = model.$self().orionModel as OrionModel
     const orionResponse = await orion.$query().get()
     this.save(orionResponse.map((m) => m.$attributes))
     return this.query().get()
@@ -78,7 +79,7 @@ export function mixin(repository: typeof Repository): void {
     ids: (string | number) | (string | number)[]
   ): Promise<Item<Model> | Collection<Model>> {
     const model = this.getModel()
-    const orion = model.orionModel
+    const orion = model.$self().orionModel as OrionModel
     let orionResponse
     const orionPromises = []
     if (Array.isArray(ids)) {
@@ -98,4 +99,4 @@ export function mixin(repository: typeof Repository): void {
       )
     }
   }
-
+}
