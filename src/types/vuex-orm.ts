@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Model, Element, Item, Collection } from '@vuex-orm/core'
-import { iQueryFunctions } from 'src/mixins/Repository'
+import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
 
+interface iFilter {
+  field: string
+  operator: FilterOperator
+  value: string
+}
 declare module '@vuex-orm/core/dist/src/repository/Repository' {
   export interface Repository<M extends Model = Model> {
     $save(records: Element | Element[]): Promise<M | M[]>
@@ -13,7 +18,12 @@ declare module '@vuex-orm/core/dist/src/repository/Repository' {
     $destroy(
       ids: (string | number) | (string | number)[]
     ): Promise<Item<M> | Collection<M>>
-    $query: iQueryFunctions<M>
+    $lookFor(string: string): Promise<Item<M> | Collection<M>>
+    $scope(
+      scope: string,
+      parameters?: unknown[]
+    ): Promise<Item<M> | Collection<M>>
+    $filter(filters: iFilter[]): Promise<Item<M> | Collection<M>>
   }
 }
 

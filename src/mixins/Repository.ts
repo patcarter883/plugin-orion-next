@@ -2,13 +2,45 @@ import { Repository, Model, Element, Item, Collection } from '@vuex-orm/core'
 import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
 import { Model as OrionModel } from '@tailflow/laravel-orion/lib/model'
 
-export interface iQueryFunctions<M extends Model> {
-  lookFor(string: string): Promise<Item<M> | Collection<M>>
-  scope(scope: string)
-}
-
 export function mixin(repository: typeof Repository): void {
   const repo = repository.prototype as Repository<Model>
+
+  repo.$lookFor = async function(string) {
+    const model = this.getModel()
+    const orion = model.$self().orionModel as OrionModel
+
+    const orionResponse = await orion
+      .$query()
+      .lookFor(string)
+      .search()
+
+    return this.save(orionResponse.map((m) => m.$attributes))
+  }
+
+  repo.$scope = async function(scope, parameters = undefined) {
+    const model = this.getModel()
+    const orion = model.$self().orionModel as OrionModel
+
+    const orionResponse = await orion
+      .$query()
+      .scope(scope, parameters)
+      .search()
+
+    return this.save(orionResponse.map((m) => m.$attributes))
+  }
+
+  repo.$filter = async function(filters) {
+    const model = this.getModel()
+    const orion = model.$self().orionModel as OrionModel
+    const query = orion.$query()
+
+    for (const { field, operator, value } of filters) {
+      query.filter(field, operator, value)
+    }
+
+    const orionResponse = await query.search()
+    return this.save(orionResponse.map((m) => m.$attributes))
+  }
 
   repo.$save = async function(
     records: Element | Element[]
