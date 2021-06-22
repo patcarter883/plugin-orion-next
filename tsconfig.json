@@ -21,30 +21,28 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-
     "lib": [
       "esnext",
       "dom",
       "es2017"
     ],
-
     "paths": {
-      "@/*": ["src/*"],
-      "test/*": ["test/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "test/*": [
+        "test/*"
+      ]
     },
-
     "types": [
       "node",
       "jest"
     ]
   },
-
   "include": [
     "src",
-    "test",
-    "types"
+    "test"
   ],
-
   "exclude": [
     "node_modules",
     "types/nuxt"

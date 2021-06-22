@@ -1,13 +1,9 @@
-import { AxiosInstance } from 'axios'
-import { Repository, Model, Element, Item, Collection } from '@vuex-orm/core'
+import { Model, Element, Item, Collection } from '@vuex-orm/core'
 import { Model as OrionModel } from '@tailflow/laravel-orion/lib/model'
 
 declare module '@vuex-orm/core/dist/src/repository/Repository' {
   export interface Repository<M extends Model = Model> {
-    /**
-     * The axios instance.
-     */
-    axios: AxiosInstance
+    orionModel: OrionModel
     $save(records: Element | Element[]): Promise<M | M[]>
     // $save(records: Element[]): Promise<M[]>
     // $save(record: Element): Promise<M>
@@ -25,11 +21,5 @@ declare module '@vuex-orm/core/dist/src/repository/Repository' {
     $destroy(
       ids: (string | number) | (string | number)[]
     ): Promise<Item<M> | Collection<M>>
-  }
-}
-
-declare module '@vuex-orm/core/dist/src/model/Model' {
-  interface Model {
-    orionModel?: OrionModel
   }
 }

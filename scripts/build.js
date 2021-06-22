@@ -21,7 +21,6 @@ async function run() {
 
 async function build() {
   await fs.remove('dist')
-
   await execa('rollup', ['-c', 'rollup.config.js'], { stdio: 'inherit' })
 }
 

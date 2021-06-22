@@ -1,1 +1,0 @@
-import './vuex-orm'

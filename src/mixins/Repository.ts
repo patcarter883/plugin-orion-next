@@ -1,15 +1,11 @@
 import { Repository, Model, Element, Item, Collection } from '@vuex-orm/core'
 import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
 
-export function mixin(repository: typeof Repository): void {
-  let repo = repository.prototype as Repository<Model>
-  const model = repo.getModel()
-  const orion = model.orionModel
-
-  if (orion !== undefined) {
+export function mixin(repo: Repository): void {
     repo.$save = async function(
       records: Element | Element[]
     ): Promise<Model | Model[]> {
+      const orion = this.orionModel
       const orionPromises = []
       let orionResponse
       if (Array.isArray(records)) {
@@ -29,6 +25,7 @@ export function mixin(repository: typeof Repository): void {
     repo.$update = async function(
       records: Element | Element[]
     ): Promise<Model | Model[]> {
+      const orion = this.orionModel
       const orionPromises = []
       let orionResponse
       if (Array.isArray(records)) {
@@ -48,6 +45,7 @@ export function mixin(repository: typeof Repository): void {
     repo.$find = async function(
       ids: (string | number) | (string | number)[]
     ): Promise<Item<Model> | Collection<Model>> {
+      const orion = this.orionModel
       let orionResponse
       if (Array.isArray(ids)) {
         orionResponse = await orion
@@ -64,6 +62,7 @@ export function mixin(repository: typeof Repository): void {
     }
 
     repo.$all = async function(): Promise<Collection<Model>> {
+      const orion = this.orionModel
       const orionResponse = await orion.$query().get()
       this.save(orionResponse.map((m) => m.$attributes))
       return this.query().get()
@@ -72,6 +71,7 @@ export function mixin(repository: typeof Repository): void {
     repo.$destroy = async function(
       ids: (string | number) | (string | number)[]
     ): Promise<Item<Model> | Collection<Model>> {
+      const orion = this.orionModel
       let orionResponse
       const orionPromises = []
       if (Array.isArray(ids)) {
@@ -92,4 +92,4 @@ export function mixin(repository: typeof Repository): void {
       }
     }
   }
-}
+
