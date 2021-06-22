@@ -23,3 +23,9 @@ declare module '@vuex-orm/core/dist/src/repository/Repository' {
     ): Promise<Item<M> | Collection<M>>
   }
 }
+
+declare module '@vuex-orm/core/dist/src/model/Model' {
+  interface Model {
+    orionModel: OrionModel
+  }
+}
