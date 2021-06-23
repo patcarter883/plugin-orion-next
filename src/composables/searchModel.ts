@@ -1,11 +1,15 @@
 import { ref } from 'vue'
-import { Repository, Model } from '@vuex-orm/core'
+import { useStore } from 'vuex'
+import { Model } from '@vuex-orm/core'
 import { showsErrors } from './showsErrors'
 import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
 import { FilterType } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterType'
 import { SortDirection } from '@tailflow/laravel-orion/lib/drivers/default/enums/sortDirection'
+import { Constructor } from '@vuex-orm/core/dist/src/types'
 
-export function searchModel<T extends Repository>(repo: T) {
+export function searchModel<T extends Model>(model: Constructor<T>) {
+  const store = useStore()
+  const repo = store.$repo<T>(model)
   const {
     validationErrors,
     errors,
