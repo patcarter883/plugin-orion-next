@@ -1,9 +1,12 @@
 import { ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import {
+  Model,
   Repository,
   WherePrimaryClosure,
   WhereSecondaryClosure
 } from '@vuex-orm/core'
+import { Constructor } from '@vuex-orm/core/dist/src/types'
 import { showsErrors } from './showsErrors'
 
 interface iQueryFilter {
@@ -11,7 +14,18 @@ interface iQueryFilter {
   value: string | WhereSecondaryClosure
 }
 
-export function useModelCollection<T extends Repository>(repo: T) {
+export function useModelCollection<T extends Model>(
+  model: Constructor<T>
+): Record<string, unknown> {
+  // export function useModelCollection<T extends Repository>(
+  //   repo: Constructor<T>
+  // ): Record<string, unknown>
+  // export function useModelCollection<T extends Model | Repository>(
+  //   model: Constructor<T>
+  // )
+  const store = useStore()
+  const repo = store.$repo<T>(model)
+
   const filters = ref<iQueryFilter[] | number[]>()
 
   const collection = computed(() => {

@@ -6,6 +6,46 @@ import { Model as OrionModel } from '@tailflow/laravel-orion/lib/model'
 export function mixin(repository: typeof Repository): void {
   const repo = repository.prototype as Repository<Model>
 
+  repo.$search = async function(search) {
+    const model = this.getModel()
+    const orion = model.$self().orionModel as OrionModel
+    const query = orion.$query()
+
+    if (search.scopes) {
+      search.scopes.forEach((scope) => {
+        if (scope.parameters) {
+          query.scope(scope.name, scope.parameters)
+        } else {
+          query.scope(scope.name)
+        }
+      })
+    }
+
+    if (search.filters) {
+      search.filters.forEach((filter) => {
+        if (filter.type) {
+          query.filter(filter.field, filter.operator, filter.value, filter.type)
+        } else {
+          query.filter(filter.field, filter.operator, filter.value)
+        }
+      })
+    }
+
+    if (search.search) {
+      query.lookFor(search.search.value)
+    }
+
+    if (search.sort) {
+      search.sort.forEach((sort) => {
+        query.sortBy(sort.field, sort.direction)
+      })
+    }
+
+    const orionResponse = await query.search()
+
+    return this.save(orionResponse.map((m) => m.$attributes))
+  }
+
   repo.$lookFor = async function(string) {
     const model = this.getModel()
     const orion = model.$self().orionModel as OrionModel
@@ -128,9 +168,7 @@ export function mixin(repository: typeof Repository): void {
     return this.query().get()
   }
 
-  repo.$destroy = async function(
-    ids: (string | number) | (string | number)[]
-  ): Promise<Item<Model> | Collection<Model>> {
+  repo.$destroy = async function(ids) {
     const model = this.getModel()
     const orion = model.$self().orionModel as OrionModel
     let orionResponse

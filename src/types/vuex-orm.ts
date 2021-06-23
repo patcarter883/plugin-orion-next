@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Model, Element, Item, Collection } from '@vuex-orm/core'
 import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
-
+import { iSearchObject } from 'src/composables/searchModel'
 interface iFilter {
   field: string
   operator: FilterOperator
@@ -13,17 +13,15 @@ declare module '@vuex-orm/core/dist/src/repository/Repository' {
     $update(records: Element | Element[]): Promise<M | M[]>
     $find(
       ids: (string | number) | (string | number)[]
-    ): Promise<Item<M> | Collection<M>>
-    $all(): Promise<Collection<M>>
+    ): Promise<Item<Model> | Collection<Model>>
+    $all(): Promise<M[]>
     $destroy(
       ids: (string | number) | (string | number)[]
-    ): Promise<Item<M> | Collection<M>>
-    $lookFor(string: string): Promise<Item<M> | Collection<M>>
-    $scope(
-      scope: string,
-      parameters?: unknown[]
-    ): Promise<Item<M> | Collection<M>>
-    $filter(filters: iFilter[]): Promise<Item<M> | Collection<M>>
+    ): Promise<Item<Model> | Collection<Model>>
+    $lookFor(string: string): Promise<M | M[]>
+    $scope(scope: string, parameters?: unknown[]): Promise<M | M[]>
+    $filter(filters: iFilter[]): Promise<M | M[]>
+    $search(searchParameters: iSearchObject): Promise<M[] | undefined>
   }
 }
 
