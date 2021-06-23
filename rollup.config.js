@@ -28,20 +28,20 @@ const configs = [
     env: 'development'
   },
   {
-    input: 'src/index.cjs.ts',
+    input: 'src/index.ts',
     file: 'dist/vuex-orm-orion.global.js',
     format: 'iife',
     env: 'development'
   },
   {
-    input: 'src/index.cjs.ts',
+    input: 'src/index.ts',
     file: 'dist/vuex-orm-orion.global.prod.js',
     format: 'iife',
     minify: true,
     env: 'production'
   },
   {
-    input: 'src/index.cjs.ts',
+    input: 'src/index.ts',
     file: 'dist/vuex-orm-orion.cjs.js',
     format: 'cjs',
     env: 'development'

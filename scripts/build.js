@@ -16,7 +16,7 @@ const files = [
 async function run() {
   await build()
   checkAllSizes()
-  generateApiDocs()
+  // generateApiDocs()
 }
 
 async function build() {
