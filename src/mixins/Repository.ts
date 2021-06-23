@@ -1,5 +1,6 @@
 import { Repository, Model, Element, Item, Collection } from '@vuex-orm/core'
 import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
+// import { QueryBuilder } from '@tailflow/laravel-orion/lib/drivers/default/builders/queryBuilder'
 import { Model as OrionModel } from '@tailflow/laravel-orion/lib/model'
 
 export function mixin(repository: typeof Repository): void {
@@ -41,6 +42,17 @@ export function mixin(repository: typeof Repository): void {
     const orionResponse = await query.search()
     return this.save(orionResponse.map((m) => m.$attributes))
   }
+
+  // repo.$runQuery = async function(query: QueryBuilder<OrionModel>) {
+  //   const orionResponse = await query.search()
+  //   return this.save(orionResponse.map((m) => m.$attributes))
+  // }
+
+  // repo.$query = function() {
+  //   const model = this.getModel()
+  //   const orion = model.$self().orionModel as OrionModel
+  //   return orion.$query()
+  // }
 
   repo.$save = async function(
     records: Element | Element[]
