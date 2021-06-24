@@ -1,13 +1,11 @@
 import { ref, computed, watch, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { Model } from '@vuex-orm/core'
+import { Repository, Model } from '@vuex-orm/core'
 import { showsErrors } from './showsErrors'
-import { Constructor } from '@vuex-orm/core/dist/src/types'
 
-export function useModel<T extends Model>(modelConstructor: Constructor<T>) {
-  const store = useStore()
-  const repo = store.$repo<T>(modelConstructor)
-
+export function useModel<
+  M extends Model,
+  R extends Repository<M> = Repository<M>
+>(repo: R) {
   const model = computed(() => {
     resetErrors()
     const query = repo.query()
@@ -24,7 +22,7 @@ export function useModel<T extends Model>(modelConstructor: Constructor<T>) {
     }
   })
 
-  const clone = ref<T>()
+  const clone = ref<Record<string, string | number | boolean | null>>()
 
   const {
     validationErrors,
@@ -36,7 +34,7 @@ export function useModel<T extends Model>(modelConstructor: Constructor<T>) {
   onMounted(() => {
     watch(model, (val) => {
       if (val) {
-        clone.value = { ...val }
+        clone.value = { ...val.$getAttributes() }
       } else {
         clone.value = undefined
       }

@@ -17,9 +17,9 @@ The following example configures the plugin with an axios instance (required), t
 ```js
 import axios from 'axios'
 import VuexORM from '@vuex-orm/core'
-import VuexORMAxios from '@vuex-orm/plugin-axios'
+import VuexORMOrion from '@vuex-orm/plugin-axios'
 
-VuexORM.use(VuexORMAxios, {
+VuexORM.use(VuexORMOrion, {
   axios,
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
   baseURL: 'https://example.com/api/'

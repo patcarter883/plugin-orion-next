@@ -39,7 +39,7 @@ If you are using native ES Modules, there is also an ESM compatible build:
 
 ```html
 <script type="module">
-  import VuexORMAxios from 'https://unpkg.com/@vuex-orm/plugin-axios/dist/vuex-orm-axios.esm.js'
+  import VuexORMOrion from 'https://unpkg.com/@vuex-orm/plugin-axios/dist/vuex-orm-axios.esm.js'
 </script>
 ```
 

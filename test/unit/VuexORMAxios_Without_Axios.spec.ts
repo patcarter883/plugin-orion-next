@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
 import VuexORM, { Model } from '@vuex-orm/core'
-import VuexORMAxios from '@/index'
+import VuexORMOrion from '@/index'
 
 Vue.use(Vuex)
-VuexORM.use(VuexORMAxios)
+VuexORM.use(VuexORMOrion)
 
-describe('unit/VuexORMAxios', () => {
+describe('unit/VuexORMOrion', () => {
   class User extends Model {
     static entity = 'users'
   }

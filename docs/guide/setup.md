@@ -7,9 +7,9 @@ An instance of axios must be configured during installation for the plugin to wo
 ```js
 import axios from 'axios'
 import VuexORM from '@vuex-orm/core'
-import VuexORMAxios from '@vuex-orm/plugin-axios'
+import VuexORMOrion from '@vuex-orm/plugin-axios'
 
-VuexORM.use(VuexORMAxios, { axios })
+VuexORM.use(VuexORMOrion, { axios })
 ```
 
 You may also configure additional options during installation. See all available [Configurations](./configurations.md).
@@ -23,10 +23,10 @@ Here is an example that demonstrates a typical setup of Vuex ORM together with t
 import axios from 'axios'
 import Vuex from 'vuex'
 import VuexORM from '@vuex-orm/core'
-import VuexORMAxios from '@vuex-orm/plugin-axios'
+import VuexORMOrion from '@vuex-orm/plugin-axios'
 import User from '@/models/User'
 
-VuexORM.use(VuexORMAxios, { axios })
+VuexORM.use(VuexORMOrion, { axios })
 
 const database = new VuexORM.Database()
 
@@ -48,10 +48,10 @@ First, leave `axios` option empty during plugin installation.
 
 import Vuex from 'vuex'
 import VuexORM from '@vuex-orm/core'
-import VuexORMAxios from '@vuex-orm/plugin-axios'
+import VuexORMOrion from '@vuex-orm/plugin-axios'
 import User from '@/models/User'
 
-VuexORM.use(VuexORMAxios) // <- No axios option.
+VuexORM.use(VuexORMOrion) // <- No axios option.
 
 const database = new VuexORM.Database()
 

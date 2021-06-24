@@ -10,7 +10,7 @@ export interface Options {
   token?: string
 }
 
-export const VuexORMAxios: VuexORMPlugin = {
+export const VuexORMOrion: VuexORMPlugin = {
   install(_store, components, options: Options) {
     Orion.init(options.host)
     repositoryMixin(components.Repository)

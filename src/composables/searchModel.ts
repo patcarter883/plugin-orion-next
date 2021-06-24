@@ -1,15 +1,14 @@
 import { ref } from 'vue'
-import { useStore } from 'vuex'
-import { Model } from '@vuex-orm/core'
+import { Model, Repository } from '@vuex-orm/core'
 import { showsErrors } from './showsErrors'
 import { FilterOperator } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterOperator'
 import { FilterType } from '@tailflow/laravel-orion/lib/drivers/default/enums/filterType'
 import { SortDirection } from '@tailflow/laravel-orion/lib/drivers/default/enums/sortDirection'
-import { Constructor } from '@vuex-orm/core/dist/src/types'
 
-export function searchModel<T extends Model>(model: Constructor<T>) {
-  const store = useStore()
-  const repo = store.$repo<T>(model)
+export function searchModel<
+  M extends Model,
+  R extends Repository<M> = Repository<M>
+>(repo: R) {
   const {
     validationErrors,
     errors,
@@ -21,7 +20,7 @@ export function searchModel<T extends Model>(model: Constructor<T>) {
     errors.value = []
   }
 
-  const foundIds = ref<Array<string | number | (string | number)[]>>()
+  const foundIds = ref<(string | number | (string | number)[])[]>()
 
   const searchObject = ref<iSearchObject>()
 

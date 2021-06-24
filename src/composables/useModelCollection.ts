@@ -1,11 +1,11 @@
-import { ref, computed } from 'vue'
-import { useStore } from 'vuex'
+import { ref, watch } from 'vue'
 import {
-  Model,
+  Repository,
+  Collection,
   WherePrimaryClosure,
-  WhereSecondaryClosure
+  WhereSecondaryClosure,
+  Model
 } from '@vuex-orm/core'
-import { Constructor } from '@vuex-orm/core/dist/src/types'
 import { showsErrors } from './showsErrors'
 
 interface iQueryFilter {
@@ -13,41 +13,46 @@ interface iQueryFilter {
   value: string | WhereSecondaryClosure
 }
 
-export function useModelCollection<T extends Model>(
-  model: Constructor<T>
-): Record<string, unknown> {
-  const store = useStore()
-  const repo = store.$repo<T>(model)
+export function useModelCollection<
+  M extends Model,
+  R extends Repository<M> = Repository<M>
+>(repo: R) {
+  const filters = ref<iQueryFilter[]>()
+  const idList = ref<(string | number | (string | number)[])[]>()
+  const collection = ref<Collection<M>>()
 
-  const filters = ref<iQueryFilter[] | number[]>()
-
-  const collection = computed(() => {
+  const collect = () => {
     const query = repo.query()
     const pk = repo.getModel().$primaryKey()
-    if (filters.value !== undefined && filters.value.length > 0) {
-      if ((filters.value as number[]).every((e) => typeof e === 'number')) {
-        if (typeof pk === 'string') {
-          query.whereIn(pk, filters.value as number[])
-        } else {
-        }
-      } else {
-        ;(filters.value as iQueryFilter[]).forEach(({ field, value }) => {
-          query.where(field, value)
-        })
+    if (idList.value) {
+      if (typeof pk === 'string' || typeof pk === 'number') {
+        query.whereIn(pk, idList.value)
       }
     }
+
+    if (filters.value) {
+      filters.value.forEach(({ field, value }) => {
+        query.where(field, value)
+      })
+    }
+
     if (relationships.value.length > 0) {
       relationships.value.forEach((relation) => {
         query.with(relation)
       })
     }
-    return query.get()
-  })
+    collection.value = query.get()
+    collectionIds.value = collection.value.map(
+      (m) => m.$getAttributes().id as string | number
+    )
+  }
 
   const relationships = ref<string[]>([])
 
-  const collectionIds = computed(() => {
-    return collection.value.map((m) => m.$getAttributes().id as string | number)
+  const collectionIds = ref<(string | number)[]>()
+
+  watch([idList, filters, relationships], () => {
+    collect()
   })
 
   const {
@@ -58,6 +63,7 @@ export function useModelCollection<T extends Model>(
   } = showsErrors()
 
   return {
+    idList,
     relationships,
     filters,
     collection,

@@ -1,13 +1,12 @@
 import { ref } from 'vue'
-import { useStore } from 'vuex'
-import { Model } from '@vuex-orm/core'
+import { Repository, Model } from '@vuex-orm/core'
 import { showsErrors } from './showsErrors'
-import { Constructor } from '@vuex-orm/core/dist/src/types'
 
-export function makeModel<T extends Model>(model: Constructor<T>) {
+export function makeModel<
+  M extends Model,
+  R extends Repository<M> = Repository<M>
+>(repo: R) {
   const modelData = ref<Record<string, string | number | boolean | null>>()
-  const store = useStore()
-  const repo = store.$repo<T>(model)
 
   const {
     validationErrors,
